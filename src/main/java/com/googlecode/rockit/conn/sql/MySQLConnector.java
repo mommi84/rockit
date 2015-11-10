@@ -63,6 +63,7 @@ public class MySQLConnector {
 			
 			String url = Parameters.SQL_URL;
 			String username = Parameters.SQL_USERNAME;
+//			String password = Parameters.SQL_PASSWORD;
 			String password = Parameters.SQL_PASSWORD;
 			
 			

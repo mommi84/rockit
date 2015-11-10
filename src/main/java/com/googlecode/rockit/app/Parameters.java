@@ -2,6 +2,8 @@ package com.googlecode.rockit.app;
 
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Properties;
@@ -14,7 +16,7 @@ import com.googlecode.rockit.exception.ReadOrWriteToFileException;
 public class Parameters
 {
 
-    public static String    PROPERTYFILE                             = "/rockit.properties";
+    public static String    PROPERTYFILE                             = "rockit.properties";
 
     // ================= PARAMETERS CONFIGURABLE IN PROPERTYFILE
 
@@ -124,7 +126,7 @@ public class Parameters
     /**
      * Database configurations: password
      */
-    public static String    SQL_PASSWORD                             = "mannheim1234";
+    public static String    SQL_PASSWORD                             = "";
     /**
      * Database configurations: database name
      */
@@ -134,7 +136,7 @@ public class Parameters
      */
     public static String    SQL_URL                                  = "jdbc:mysql://127.0.0.1/";
 
-    public static int       THREAD_NUMBER                            = -1;
+    public static int       THREAD_NUMBER                            = 1;
 
     // ================= PARAMETERS NOT CONFIGURABLE FOR USER
 
@@ -184,11 +186,21 @@ public class Parameters
     public static void readPropertyFile() throws ReadOrWriteToFileException
     {
         Properties properties = new Properties();
-        try (InputStream inputStream = Parameters.class.getResourceAsStream(PROPERTYFILE)) {
-            properties.load(inputStream);
-        } catch(IOException e) {
-            throw new ReadOrWriteToFileException("Please define your properties data in a rockit.property file");
-        }
+        try {
+			properties.load(new FileReader(new File(PROPERTYFILE)));
+		} catch (FileNotFoundException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		} catch (IOException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+//        try (InputStream inputStream = Parameters.class.getResourceAsStream(PROPERTYFILE)) {
+//            properties.load(inputStream);
+//        } catch(IOException e) {
+//        	e.printStackTrace();
+//            throw new ReadOrWriteToFileException("Please define your properties data in a rockit.property file");
+//        }
         Parameters.SQL_URL = properties.getProperty("sql_url");
         Parameters.SQL_USERNAME = properties.getProperty("sql_username");
         Parameters.SQL_PASSWORD = properties.getProperty("sql_password");
@@ -238,6 +250,7 @@ public class Parameters
         }
         try {
             Parameters.THREAD_NUMBER = Integer.parseInt(properties.getProperty("number_of_threads"));
+            System.out.println("threads is now "+Integer.parseInt(properties.getProperty("number_of_threads")));
             if(Parameters.THREAD_NUMBER <= 0) {
                 int cores = Runtime.getRuntime().availableProcessors();
                 Parameters.THREAD_NUMBER = cores;
