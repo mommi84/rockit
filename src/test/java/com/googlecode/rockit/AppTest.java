@@ -1,4 +1,4 @@
-package de.unima.ki.rockit;
+package com.googlecode.rockit;
 
 import junit.framework.Test;
 import junit.framework.TestCase;

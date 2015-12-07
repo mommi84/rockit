@@ -1,4 +1,4 @@
-package de.unima.ki.rockit;
+package com.googlecode.rockit;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
